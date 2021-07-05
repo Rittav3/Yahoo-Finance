@@ -59,7 +59,7 @@ for ticker in stock:
     data.to_csv(savename)
     
 
-
+print ('Done ...')
 
 # %%
 
