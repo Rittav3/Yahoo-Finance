@@ -1,5 +1,5 @@
 # %%
-from yahoofinancials import YahooFinancials
+#from yahoofinancials import YahooFinancials
 import yfinance as yf
 import pandas as pd
 import requests
@@ -54,9 +54,9 @@ stock = { '^GSPC':'S&P500',
          '0700.HK' : 'TENCENT',
          'RMS.PA' : 'HERMES',
          'NTDOY' : 'NINTENDO',
-         'MC.PA' : 'LVMH'
-         
- 
+         'QYLD' : 'QYLD ETF',
+         'MC.PA' : 'LVMH',
+         '^KS11':'KOSPI'
         }
 
 # %%
