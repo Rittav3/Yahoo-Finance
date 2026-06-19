@@ -6,7 +6,7 @@ import requests
 import numpy as np
 
 # %%
-savepath = 'C:/Amibroker Data/Raw Data/'
+savepath = '~/Amibroker Data/Raw Data/'
 startdate = '2000-01-01'
 enddate = '2040-12-31'
 
@@ -54,11 +54,13 @@ stock = { '^GSPC':'S&P500',
          '0700.HK' : 'TENCENT',
          'RMS.PA' : 'HERMES',
          'NTDOY' : 'NINTENDO',
-         '^KS11' : 'KOSPI',
-         'XAUT-USD': 'XAUT-USD',
-         'MC.PA' : 'LVMH'
-         
- 
+         'QYLD' : 'QYLD ETF',
+         'MC.PA' : 'LVMH',
+         '^SET.BK':'SET',
+         '^KS11':'KOSPI',
+         'SOXX':'Semiconductor ETF',
+         'SNDK':'SANDISK'
+
         }
 
 # %%
