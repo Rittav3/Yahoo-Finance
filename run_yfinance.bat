@@ -1,3 +1,4 @@
 
-C:\Users\my\.conda\envs\python3.13\python.exe  "C:\My Python\Yfinance_7.py"
-C:\Users\my\.conda\envs\python3.13\python.exe  "C:\My Python\BitcoinMVRC_window.py"
+C:\Users\my\.conda\envs\python3.13\python.exe  "C:\My Python\Yahoo-Finance\Yfinance_7.py"
+C:\Users\my\.conda\envs\python3.13\python.exe  "C:\My Python\Yahoo-Finance\Download_Bitcoin_MVRV_windows.py"
+C:\Users\my\.conda\envs\python3.13\python.exe  "C:\My Python\Yahoo-Finance\iFund\iFund_01.py"

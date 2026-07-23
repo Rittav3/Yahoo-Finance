@@ -1,7 +1,6 @@
 import asyncio
 import os
 import re
-from click import Path
 from playwright.async_api import Playwright, async_playwright, expect
 
 from pathlib import Path
