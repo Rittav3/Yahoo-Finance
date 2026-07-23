@@ -7,7 +7,7 @@ download_folder = str(Path.home() / "Downloads")
 
 mvrv_file = download_folder + '\\mvrv.json'
 savefile = download_folder + '\\downloadMVRV.csv'
-BitcoinMVRV_file = 'C:\Amibroker Data\Raw Data\BitcoinMVRV.csv' #load existing MVRV file to combine with downloadMVRF.csv
+BitcoinMVRV_file = '~\Amibroker Data\Raw Data\BitcoinMVRV.csv' #load existing MVRV file to combine with downloadMVRF.csv
 #save_final_BitcoinMVRV_combined_file = download_folder + '\\BitcoinMVRV_combine.csv'
 save_final_BitcoinMVRV_combined_file = BitcoinMVRV_file #overwrite to existing file
 
