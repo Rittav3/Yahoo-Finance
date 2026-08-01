@@ -1,6 +1,7 @@
 import asyncio
 import os
 import re
+from click import Path
 from playwright.async_api import Playwright, async_playwright, expect
 
 from pathlib import Path
@@ -183,8 +184,10 @@ class Convert_raw_ifund_to_amibroker:
 
 
 if __name__ == "__main__":
-    fundlist = ['ASP-DIGIBLOCRMF','UCI','LHSEMICON-A','ES-CASH','SCBKEQTG','KFGTECHRMF']  
-
+    ## Define the list of fund names to be processed 
+    fundlist = ['ASP-DIGIBLOCRMF','UCI','LHSEMICON-A','ES-CASH','SCBKEQTG','KFGTECHRMF','B-INDIAMRMF',
+        'TBIOTECH','SCBNK225','B-EUPASSIVE','B-US2000P','SCBGOLD','ES-OIL','SCBBANKINGA','KT-CHINABOND-A']
+    
     ifund_savefolder = str(Path.home() / "Amibroker Data/ifund/ifund_raw")
     convert_file_savefolder = str(Path.home() / "Amibroker Data/Raw Data")
 
