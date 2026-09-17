@@ -60,7 +60,8 @@ stock = { '^GSPC':'S&P500',
          '^KS11':'KOSPI',
          'SOXX':'Semiconductor ETF',
          'NOK':'NOKIA',
-         'SNDK':'SANDISK'
+         'SNDK':'SANDISK',
+         'SI=F':'SILVER'
 
         }
 
