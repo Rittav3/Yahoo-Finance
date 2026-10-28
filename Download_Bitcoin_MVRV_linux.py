@@ -1,52 +1,30 @@
 # %%
-#Rittavee 2025 10 11
-# load bitcoin MVRV for linux version
-
-#Set up all file path here:
+# Set up all file path here:
 from pathlib import Path
 
-#use folder 'Downloads' as default
+# use folder 'Downloads' as default
 download_folder = str(Path.home() / "Downloads")
 
 mvrv_file = download_folder + '//mvrv.json'
 savefile = download_folder + '//downloadMVRV.csv'
-BitcoinMVRV_file = '//home/home/Amibroker Data/Raw Data/BitcoinMVRV.csv' #load existing MVRV file to combine with downloadMVRF.csv
-
-#for testing use this
-#save_final_BitcoinMVRV_combined_file = download_folder + '//BitcoinMVRV_combine.csv'
-
-save_final_BitcoinMVRV_combined_file = BitcoinMVRV_file #overwrite to existing file
-
-
+BitcoinMVRV_file = '~//Amibroker Data//Raw Data//BitcoinMVRV.csv' # load existing MVRV file to combine with downloadMVRF.csv
+# save_final_BitcoinM_combined_file = download_folder + '//BitcoinMVRV_combine.csv'
+save_final_BitcoinMVRV_combined_file = BitcoinMVRV_file # overwrite to existing file
 
 # %%
-#Step 1: Delete old mvrv.json files in Downloads folder
-
-
+# Step 1: Delete old mvrv.json files in Downloads folder
 
 def delete_matching_files_in_downloads():
     """
     Finds the user's Downloads folder and deletes files that match a specific pattern.
-
-    The script will delete files that:
-    - Are in the main "Downloads" folder.
-    - Start with the prefix 'mvrv'.
-    - End with the extension '.json'.
     """
     try:
-        # 1. Get the path to the user's Downloads folder
         downloads_path = Path.home() / "Downloads"
-
-        # Check if the Downloads folder actually exists
         if not downloads_path.is_dir():
             print(f"Error: The Downloads folder was not found at '{downloads_path}'")
             return
 
-        print(f"Searching for old mvrv files to delete in: {downloads_path}")
-
-        # 2. Find all files matching the pattern 'mvrv*.json'
-        # The glob pattern 'mvrv*.json' finds all items in the directory
-        # that start with 'mvrv' and end with '.json'.
+        print(f"Searching for files in: {downloads_path}")
         files_found = list(downloads_path.glob('mvrv*.json'))
 
         if not files_found:
@@ -57,17 +35,10 @@ def delete_matching_files_in_downloads():
         for file_path in files_found:
             print(f" - {file_path.name}")
 
-        # Optional: Ask for confirmation before deleting
-        # confirm = input("Do you want to proceed with deletion? (y/n): ")
-        # if confirm.lower() != 'y':
-        #     print("Deletion cancelled.")
-        #     return
-
-        # 3. Delete the files
         for file_path in files_found:
             try:
                 file_path.unlink()  # Deletes the file
-                print(f"Successfully deleted: {file_path.name}")
+                print(f"Successfully deleted: {_path.name}")
             except OSError as e:
                 print(f"Error deleting file {file_path.name}: {e}")
 
@@ -77,59 +48,53 @@ def delete_matching_files_in_downloads():
 if __name__ == "__main__":
     delete_matching_files_in_downloads()
 
-
 # %%
-#step 2 click download button on webpage topo download new mvrv.json file
-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
+# STEP 2: Click download button on webpage using Playwright
+from playwright.sync_api import Playwright, sync_playwright, expect
 import time
 
+def run_automation():
+    # Launch browser (headless=False allows you to see the window)
+    with sync_playwright() as p:
+        # You can use chromium, firefox, or webkit
+        browser = p.chromium.launch(headless=False) 
+        context = browser.new_context()
+        page = context.new_page()
 
-# Optional: specify path to chromedriver if not in PATH
-#service = Service('~//Documents//Chrome driver//chromedriver')
+        try:
+            # Step 1: Open the web page
+            page.goto("https://www.blockchain.com/explorer/charts/mvrv")
+            
+            # Wait for a short time to allow page load (similar to your original script)
+            time.sleep(5)
 
-# Set Chrome options # ตั้งค่า ChromeOptions เพื่อแก้ไขปัญหาที่พบบ่อยบน Linux
-options = Options()
-options.add_argument("--no-sandbox")
+            # Step 2: Locate and click the button using XPath
+            # Playwright's locator handles waiting automatically for element visibility
 
-# Launch browser
-driver = webdriver.Chrome(options=options)
+            with page.expect_download() as download_info:
+                page.get_by_text("Download JSON").click()
+            download = download_info.value
+            download.save_as(mvrv_file)
+            print('download to : '+ mvrv_file)
 
 
-try:
-    # Step 1: Open the web page
-    driver.get("https://www.blockchain.com/explorer/charts/mvrv")
-    time.sleep(5)
-    # Step 2: Wait for the element and click it
-    #xpath of button "Download JSON"
-    
-    xpath =  '/html/body/div/div[2]/div[2]/main/div/div/div/div[1]/section/div/div/div/div[1]'
+            print("Button clicked successfully via Playwright.")
+            
+            # Optional: wait to observe result
+            time.sleep(3)
 
-    wait = WebDriverWait(driver, 20)
-    button = wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
-    button.click()
+        except Exception as e:
+            print(f"An error occurred during automation: {e}")
+        finally:
+            browser.close()
 
-    print("Button clicked successfully.")
-
-    # Optional: wait to observe result
-    time.sleep(3)
-
-finally:
-    driver.quit()
+run_automation()
 
 # %%
-#STEP3 read json and made CSV file, save to foldrev 'download_folder' =>'Downloads'
-
-# %%
+# STEP 3: Read JSON and make CSV file
 import json
 import pandas as pd
 from datetime import datetime
-
 
 # Load JSON data
 with open(mvrv_file, 'r') as f:
@@ -138,7 +103,7 @@ with open(mvrv_file, 'r') as f:
 # Extract MVRV data
 mvrv_data = data['mvrv']
 
-# Convert to DataFrame 
+# Convert to DataFrame
 df = pd.DataFrame(mvrv_data)
 
 # Convert timestamp from milliseconds to datetime
@@ -146,7 +111,7 @@ df['timestamp'] = pd.to_datetime(df['x'], unit='ms')
 df['mvrv'] = df['y']
 
 # Reorder and clean up
-df = df[['timestamp', 'mvrv']] #mvrv is a vlaue of MVRV
+df = df[['timestamp', 'mvrv']]
 
 
 
@@ -171,7 +136,7 @@ df_mvrv_daily.drop(['mvrv','timestamp'], axis=1, inplace=True)
 
 # %%
 df_mvrv_daily.to_csv(savefile,index=False)
-
+print('save file to :' + savefile)
 del df, df_mvrv_daily
 
 # %%
@@ -214,9 +179,4 @@ except Exception as e:
 print('All done')
 
 # %%
-
-
-# %%
-
-
 
